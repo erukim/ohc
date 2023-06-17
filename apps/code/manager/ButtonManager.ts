@@ -1,0 +1,76 @@
+import { BaseButton } from '../../../typings/structures';
+import Logger from '../../utils/Logger';
+import BaseManager from './BaseManager';
+import fs from 'fs';
+import path from 'path';
+import BotClient from '../base/BotClient';
+
+export default class ButtonManager extends BaseManager {
+  private logger = new Logger('ButtonManager');
+  private buttons: BotClient['buttons'];
+
+  public constructor(client: BotClient) {
+    super(client);
+
+    this.buttons = client.buttons;
+  }
+
+  public load(buttonPath: string = path.join(__dirname, '../interactions/buttons')): void {
+    this.logger.debug('Loading buttons...');
+
+    const buttonFolder = fs.readdirSync(buttonPath);
+
+    try {
+      buttonFolder.forEach((folder) => {
+        if (!fs.lstatSync(path.join(buttonPath, folder)).isDirectory()) return;
+
+        try {
+          const buttonFiles = fs.readdirSync(path.join(buttonPath, folder));
+
+          buttonFiles.forEach((buttonFile) => {
+            try {
+              const {
+                default: button,
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
+              } = require(`../interactions/buttons/${folder}/${buttonFile}`);
+
+              if (!button.data.customId ?? !button.customId)
+                return this.logger.debug(`Button ${buttonFile} has no customId. Skipping.`);
+
+              this.buttons.set(button.data.customId ?? button.customId, button);
+
+              this.logger.debug(`Loaded Button ${button.data.customId ?? button.customId}`);
+            } catch (error: any) {
+              this.logger.error(`Error loading button '${buttonFile}'.\n` + error.stack);
+            } finally {
+              this.logger.debug(`Succesfully loaded buttons. count: ${this.buttons.size}`);
+              // eslint-disable-next-line no-unsafe-finally
+              return this.buttons;
+            }
+          });
+        } catch (error: any) {
+          this.logger.error(`Error loading button folder '${folder}'.\n` + error.stack);
+        }
+      });
+    } catch (error: any) {
+      this.logger.error('Error fetching folder list.\n' + error.stack);
+    }
+  }
+
+  public get(commandName: string): BaseButton | undefined {
+    if (this.client.buttons.has(commandName)) return this.client.buttons.get(commandName);
+  }
+
+  public reload(buttonPath: string = path.join(__dirname, '../interactions/buttons')) {
+    this.logger.debug('Reloading buttons...');
+
+    this.buttons.clear();
+    try {
+      this.load(buttonPath);
+    } finally {
+      this.logger.debug('Succesfully reloaded buttons.');
+      // eslint-disable-next-line no-unsafe-finally
+      return { message: '[200] Succesfully reloaded commands.' };
+    }
+  }
+}

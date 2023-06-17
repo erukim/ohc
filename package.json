@@ -1,16 +1,15 @@
 {
-  "name": "mora-bot",
-  "version": "14.11.17",
+  "name": "ohc",
+  "version": "0.0.1",
   "types": "./typings/index.d.ts",
-  "description": "모라봇 v14 코드 입니다.",
+  "description": "OHC BOT Code",
   "main": "build/src/index.js",
   "scripts": {
     "start": "yarn run build && cd build && node apps/code/index.js",
     "start:pm2": "yarn run build && yarn run pm2:start",
     "dev": "ts-node-dev --transpile-only --respawn --trace-warnings --trace-uncaught --exit-child -- ./apps/code/index.ts",
-    "dev:ticket": "ts-node-dev --transpile-only --respawn --trace-warnings --trace-uncaught --exit-child -- ./apps/ticket/index.ts",
     "generate": "prisma generate",
-    "build": "echo 'Mora Bot의 빌드 작업을 시작합니다.' && tsc --project tsconfig.json && echo 'Mora Bot의 빌드 작업이 완료되었습니다. /build'",
+    "build": "echo 'OHC Bot의 빌드 작업을 시작합니다.' && tsc --project tsconfig.json && echo 'OHC Bot의 빌드 작업이 완료되었습니다. /build'",
     "test": "yarn run lint:fix && yarn run format:fix && yarn run build",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
@@ -21,8 +20,7 @@
     "pm2:stop": "pm2 stop pm2.json",
     "pm2:delete": "pm2 delete pm2.json",
     "pm2:reload": "pm2 reload pm2.json",
-    "pm2:restart": "pm2 restart pm2.json",
-    "t": "ts-node-dev --transpile-only --respawn --trace-warnings --trace-uncaught --exit-child -- ./apps/test/index.ts"
+    "pm2:restart": "pm2 restart pm2.json"
   },
   "author": "",
   "license": "GPL-3.0",
