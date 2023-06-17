@@ -41,6 +41,8 @@ export const config: IConfig = {
     img: "",
     level: 'chat',
     dev: false,
+    command_log: ``,
+    console_log: ``
   },
   database: {
     /**
