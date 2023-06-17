@@ -1,0 +1,29 @@
+node_modules
+mora-test.js
+Discord-MusicBot
+config.ts
+
+# yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# Log files
+logs/*
+*.log
+npm-debug.log*
+
+# Miscellaneous
+.tmp/
+.idea/
+.DS_Store
+
+# Database
+*.sqlite
+
+# Build data
+build/

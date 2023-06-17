@@ -1,0 +1,11 @@
+{
+  "$schema": "https://github.com/edosssa/pm2-config/raw/master/pm2config.json",
+  "apps": [
+    {
+      "name": "OHC",
+      "script": "./apps/code/index.js",
+      "node_args": "--enable-source-maps",
+      "restart_delay": 5000
+    }
+  ]
+}
